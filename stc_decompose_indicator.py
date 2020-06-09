@@ -40,14 +40,14 @@ def calc_dff(dK,dD):
             dff[j]=100*(dK[j]-dD[j])/(100-abs(dK[j])+1)
     return dff
 
-stock0 = '9432' #sony6758 Jal 9201 三井住友フィナンシャル　8316 docomo9437 ana9202 日産7201 fasuto9983 8411	みずほ 4005	住友化 4553 東和薬品 9432 NTT
+stock0 = '8411' #sony6758 Jal 9201 三井住友フィナンシャル　8316 docomo9437 ana9202 日産7201 fasuto9983 8411	みずほ 4005	住友化 4553 東和薬品 9432 NTT
 stock = stock0 + '.JP'
 start = dt.date(2020,1,1)
 end = dt.date(2020,6,5)
 df = pd.DataFrame(get_stock(stock, start, end))
 series = df['Close']
 print(series)
-bunseki = "cycle" #series" #cycle" #trend
+bunseki = "trend" #series" #cycle" #trend
 
 cycle, trend = sm.tsa.filters.hpfilter(series, 144)
 fig, ax = plt.subplots(3,1)
@@ -60,7 +60,7 @@ ax[2].set_title('Deviation')
 plt.savefig("./stock/{}/close_%K%D_{}_{}now{}.png".format(stock0,stock,bunseki,start))
 plt.pause(1)
 #plt.close()
-df['Close']=cycle #series #cycle #trend
+df['Close']=trend #series #cycle #trend
 
 df['High'] = get_high(stock, start, end)
 series = df['High']
@@ -75,7 +75,7 @@ ax[2].set_title('Deviation')
 plt.savefig("./stock/{}/high_%K%D_{}_{}now{}.png".format(stock0,stock,bunseki,start))
 plt.pause(1)
 #plt.close()
-df['High']=cycle #series #cycle #trend
+df['High']=trend #series #cycle #trend
 
 df['Low'] = get_low(stock, start, end)
 series = df['Low']
@@ -90,7 +90,7 @@ ax[2].set_title('Deviation')
 plt.savefig("./stock/{}/All_%K%D_{}_{}now{}.png".format(stock0,stock,bunseki,start))
 plt.pause(1)
 plt.close()
-df['Low']=cycle #series #cycle #trend
+df['Low']=trend #series #cycle #trend
 
 df['%K'] = STOK(df['Close'], df['Low'], df['High'], 14)
 df['%D'] = STOD(df['Close'], df['Low'], df['High'], 14)
